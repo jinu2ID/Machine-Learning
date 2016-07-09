@@ -36,13 +36,13 @@ projected = data*W;                     % project data onto principle components
 
 % Graph data
 figure(1);
-plot(projected(targets==-1,1), projected(targets==-1,2),'ob');
+plot(projected(targets==-1,2), projected(targets==-1,1),'xb');
 hold on;
-plot(projected(targets==1,1), projected(targets==1,2),'or');
+plot(projected(targets==1,2), projected(targets==1,1),'or');
 hold off;
 title('Principal Component Analysis');
-xlabel('PCA 2');
-ylabel('PCA 1');
+xlabel('Principle Component 1');
+ylabel('Principle Component 2');
 legend('-1','+1');
 
 end
