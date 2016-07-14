@@ -7,6 +7,12 @@
 
 function LDA(fileName)
 
+clearvars -except fileName
+
+if(nargin < 1)
+    fileName = 'diabetes.csv';
+end
+
 % Read in data
 data = [];
 if (exist(fileName, 'file'))
