@@ -1,4 +1,4 @@
-% SFCV.m
+% sFoldsCrossVal.m
 % Author: Jinu Jacob
 % jj559@drexel.edu
 % 7/16
@@ -7,7 +7,7 @@
 
 function SFCV(fileName, s)
 
-clearvars -except fileName folds
+clearvars -except fileName s
 
 if(nargin < 1)
     fileName = 'x06Simple.csv';
@@ -51,9 +51,6 @@ for i=1:s
     % Select fold i as testing data and remaining (S-1) as training data
     testing = c{i};
     training = cell2mat(c(~ismember(idx,i)));
-    
-    size(testing)
-    size(training)
     
     % Standardize the data
     r_train = training(:,end);          % remove training targets
