@@ -11,8 +11,8 @@ clearvars -except fileName
 
 if(nargin < 1)
     fileName = 'x06Simple.csv';
-    s = 5;
 end
+
 
 % Read in data
 if (exist(fileName, 'file'))
