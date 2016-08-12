@@ -70,13 +70,13 @@ FN = 0; % False Negatives
     
 for i=1:length(r_test)
     classes = r_train(locs(1:k,i));
-    if (r_test(i) == 1) % predicted positive
+    if (r_test(i) == 1) 
         if (sum(classes==1)>=k) %true positive
             TP = TP+1;
         else
             FN = FN+1;   % false negative
         end
-    else % predicted negative
+    else 
         if(sum(classes==1)>=k)
             FP = FP + 1; % false positive
         else
@@ -90,8 +90,8 @@ FP
 FN
 precision = TP/(TP + FP)
 recall = TP/(TP + FN)
-accuracy = (TP + TN)/(TP + TN + FP + FN)
 fMeasure = (2 * precision * recall)/(precision + recall) 
+accuracy = (TP + TN)/(TP + TN + FP + FN)
 
 %figure(1)
 %plot(Recall, Precision);

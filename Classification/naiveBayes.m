@@ -22,7 +22,7 @@ else
 end
 
 % Randomly swap rows
-n = length(data);
+n = length(data);                           % number of observations
 rng(0);
 ordering = randperm(n);
 rand_data = data(ordering,:);
@@ -51,22 +51,63 @@ training = training./repmat(s,length(training),1);      % element divide by std
 testing = testing - repmat(m,length(testing),1);        % standardize testing data
 testing = testing./repmat(s,length(testing),1);
 
-% Divide the training data into two groups: Spam samples, Non-Spam samples.
-spam_training = (training(r_train==1,:));
-nonspam_training = (training(r_train==0,:));
+classes = unique(r_train);      % unique class values
+numClasses = length(classes);   % number of classes
+prior = NaN(numClasses,1);      % prior probability of class
 
-% Create Normal models for each feature for each class.z
-numFeatures = size(spam_training,2);        % the number of columns/features
-
-spam_means = mean(spam_training, 1);        % get means of each feature in spam
-spam_std = std(spam_training,1);            % get standard deviation of each feature in spam
-
-nonspam_means = mean(nonspam_training, 1);        % get means of each feature in nonspam
-nonspam_std = std(nonspam_training,1);            % get standard deviation of each feature in nonspam
+for i=1:numClasses
+   prior(i) = sum(double(r_train == classes(i)))/length(r_train);            % calculate the prior for each class 
+end
 
 
+% Create Normal models for each feature for each class
+for i=1:numClasses
+   class_i = training((r_train==classes(i)),:);               % for each class i
+   m_i(i,:) = mean(class_i,1);                                % compute mean for each feature
+   std_i(i,:) = std(class_i,1);                               % compute standard deviation for each feature 
+end
 
+% Classify testing samples
+for i=1:length(testing)                                                      % for each testing sample:
+    for j=1:numClasses
+        probs(i,j) = prior(j)*prod(normpdf(testing(i,:),m_i(j),std_i(j)));  % calculate probabilities of being in each class
+    end
+    
+    [M,I] = max(probs(i,:));        % classify sample as class with highest probability
+    predicted(i,:) = classes(I);    
+end
 
-% Classify testing samples using models
+% Compute statistics
+TP = 0;
+TN = 0;
+FP = 0;
+FN = 0;
+
+for i=1:length(r_test)
+   if (r_test(i)==1)    % actually positive
+       if (predicted(i)==1) 
+           TP = TP+1;
+       else
+           FN =FN+1;
+       end
+   else     % actually negative
+       if (predicted(i)==1)
+           FP = FP+1;
+       else
+           TN = TN+1;
+       end
+   end
+end
+
+TP
+TN
+FP
+FN
+
+precision = TP/(TP + FP)
+recall = TP/(TP + FN)
+fMeasure = (2 * precision * recall)/(precision + recall) 
+accuracy = (TP + TN)/(TP + TN + FP + FN)
+
 end
 
