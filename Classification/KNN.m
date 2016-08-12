@@ -93,9 +93,5 @@ recall = TP/(TP + FN)
 fMeasure = (2 * precision * recall)/(precision + recall) 
 accuracy = (TP + TN)/(TP + TN + FP + FN)
 
-%figure(1)
-%plot(Recall, Precision);
-
-
 end
 
