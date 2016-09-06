@@ -77,38 +77,24 @@ while(iter < 10001)
         GwX = 1.0 ./(1.0 + exp(-training*w));
         w(j) = w(j) + ((learn_rate/n) * sum((r_train - GwX)' * training(:,j)));
     end
-    
-    % calculate mean log likelihood
-%     p1 = NaN(length(training),1);
-%     p2 = NaN(length(training),1);
-%     for t=1:training_size
-%         
-%         % avoiding ln(0)
-%         p1(t) = log(GwX(t));
-%         if (p1(t) == -inf)
-%             p1(t) = 0;
-%         end
-%         p2(t) = log(1-GwX(t));
-%         if (p2(t) == -inf)
-%             p2(t) = 0;
-%         end
-%     end
 
+    % Handle cases of log(0) = -infinity
     p1 = log(GwX);
     p1(p1 == -inf) = 0;
     p2 = log(1-GwX);
     p2(p2 == -inf) = 0;
     
+    % calculate mean log likelihood
     mll(iter) = sum((r_train'*p1) + (1 - r_train)'*p2)/training_size;
     
      
     
-    % Terminate when percent change in log likelihood is less than 0.0001
+    % Terminate when change in log likelihood is less than 0.0001
     if (iter ~= 1)
        %iter
        percent_change = abs(mll(iter) - mll(iter-1));
        if (percent_change < eps)
-           break
+           break;
        end
        
        % Decrease learning rate by half if log likelihood decreases
@@ -123,7 +109,24 @@ while(iter < 10001)
 end
 
 plot(mll);
-mll
+
+% Compute classifier statistics on testing set
+predicted = w'*testing';
+predicted = predicted';
+
+
+predicted(predicted >= 0.5) = 1;
+predicted(predicted < 0.5) = 0;
+
+TP = length(r_test((r_test==1) & (predicted==1)));
+TN = length(r_test((r_test==0) & (predicted==0)));
+FP = length(r_test((r_test==0) & (predicted==1)));
+FN = length(r_test((r_test==1) & (predicted==0)));
+precision = TP/(TP+FP)
+recall = TP/(TP+FN)
+fmeasure = (2*precision*recall)/(precision+recall)
+accuracy = (TP + TN)/(TP+TN+FP+FN)
+
 
 end
 
