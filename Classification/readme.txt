@@ -5,7 +5,6 @@ KNN, Naive Bayes, PR Tradeoff, Logistic Regression, Builtins: https://archive.ic
 
 Multi-Class Classification:
 http://archive.ics.uci.edu/ml/datasets/Cardiotocography
-2
 
 
 ----------------------------------------------------------------
