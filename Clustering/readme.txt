@@ -2,18 +2,22 @@ Jinu Jacob
 Clustering
 
 ----------------------------------------------------------------
-                            KNN.m
+		kMeansCluster.m
 ----------------------------------------------------------------
-Performs k-Nearest Neighbors classification on data set
+Performs k-means clustering using just the 6th and 7th features of the data
 
 
 HOW TO RUN:
 
 To run from the Matlab command line use:
+	
+	kMeansCluster()
 
-	KNN()
+The default file used will be 'diabetes.csv'.
+To use a different file use:
 
-The default file used will be 'spambase.data'.and the default k value will be 5.
-To use a different file and s value use:
+	kMeansCluster(file name)
 
-	KNN(filename, k)
+
+
+Note: The full file path should be specified unless the path has been added to Matlabs's pathdef.m
